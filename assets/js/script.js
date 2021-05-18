@@ -64,11 +64,11 @@ const startMinigame = () => {
     let ctx = canvas.getContext('2d')
 }
 const renderHearts = () => {    
-    for (i = -3; i > hearts -3; i++) {
-        elementBuilder.newImage("", "", "margin: 10px;", "./assets/img/empty_heart.svg", heartsContainer)
-    }
     for (i = 0; i < hearts; i++) {
         elementBuilder.newImage("", "", "margin: 10px;", "./assets/img/full_heart.svg", heartsContainer)
+    }
+    for (i = hearts-3; i < 0; i++) {
+        elementBuilder.newImage("", "", "margin: 10px;", "./assets/img/empty_heart.svg", heartsContainer)
     }
 }
 const startGame = () => {
