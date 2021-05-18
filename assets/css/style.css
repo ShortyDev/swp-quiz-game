@@ -1,4 +1,17 @@
-.btn {
+.answer-btn {
+  color: black;
+  border: 2px black solid;
+  font-size: 30px;
+  border-radius: 15px;
+  width: 100%;
+  padding: 5%;
+  background: linear-gradient(242deg, #a948d3, #33bbff);
+  background-size: 400% 400%;
+  -webkit-animation: color-gradient 30s ease infinite;
+  -moz-animation: color-gradient 30s ease infinite;
+  animation: color-gradient 30s ease infinite;
+}
+.start-btn {
   color: black;
   text-transform: uppercase;
   border: 5px black solid;
@@ -15,7 +28,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.btn:hover {
+.start-btn:hover {
   color: white;
 }
 @-webkit-keyframes color-gradient {
