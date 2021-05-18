@@ -83,12 +83,12 @@ const startGame = () => {
         nextQuestion = question
     })
 
-    answers = currentQuestion._answers
+    answers = currentQuestion.answers
     shuffle(answers)
 
     questions.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"
 
-    let question = elementBuilder.newHeader(3, "", "", "", currentQuestion._question, questions)
+    let question = elementBuilder.newHeader(3, "", "", "", currentQuestion.question, questions)
     let countdown = elementBuilder.newHeader(6, "", "", "", "Noch " + currentTime + " Sekunde" + (currentTime != 1 ? "n" : ""), questions)
     let firstRow = questions.appendChild(elementBuilder.newDiv("", "row"))
     let secondRow = questions.appendChild(elementBuilder.newDiv("", "row"))
@@ -112,10 +112,10 @@ const startGame = () => {
     let thirdColumn = secondRow.appendChild(elementBuilder.newDiv("", "col-md-6 p-3"))
     let fourthColumn = secondRow.appendChild(elementBuilder.newDiv("", "col-md-6 p-3"))
 
-    elementBuilder.newButton("answer1", "answer-btn", answers[0]._name, firstColumn)
-    elementBuilder.newButton("answer2", "answer-btn", answers[1]._name, secondColumn)
-    elementBuilder.newButton("answer3", "answer-btn", answers[2]._name, thirdColumn)
-    elementBuilder.newButton("answer4", "answer-btn", answers[3]._name, fourthColumn)
+    elementBuilder.newButton("answer1", "answer-btn", answers[0].name, firstColumn)
+    elementBuilder.newButton("answer2", "answer-btn", answers[1].name, secondColumn)
+    elementBuilder.newButton("answer3", "answer-btn", answers[2].name, thirdColumn)
+    elementBuilder.newButton("answer4", "answer-btn", answers[3].name, fourthColumn)
 }
 startButton.onclick = () => {
     if (game_state == game_states.START) {
