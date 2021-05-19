@@ -56,7 +56,7 @@ class SnakeGame extends Game {
             ctx.moveTo(i * (this.canvas.width / 15) - 1, 0)
             ctx.lineTo(i * (this.canvas.width / 15) - 1, this.canvas.height)
             ctx.moveTo(0, i * (this.canvas.height / 15) - 1)
-            ctx.lineTo(ctx.canvas.width, i * (this.canvas.height / 15) - 1)
+            ctx.lineTo(this.canvas.width, i * (this.canvas.height / 15) - 1)
             ctx.stroke()
         }
     }
