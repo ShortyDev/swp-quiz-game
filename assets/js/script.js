@@ -24,6 +24,7 @@ const questions = elementBuilder.newDiv("questions", "container", document.getEl
     questions.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"
 const getNextQuestion = async () => {
     const result = await $.ajax({
+        // https://github.com/ShortyDev/swp-questions-provider-server
         url: "https://questions-game-swp.herokuapp.com/new/random",
         type: 'GET'
     });
