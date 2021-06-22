@@ -30,7 +30,7 @@ const getNextQuestion = async () => {
     });
     return JSON.parse(result)
 }
-const getSuggestedRemainingTime = () => {
+const suggestRemainingTime = () => {
     if (questionsSolved >= questionsToWin) {
         return -1
     } else if (questionsSolved >= 15) {
@@ -64,7 +64,7 @@ const startMinigame = () => {
     let question = elementBuilder.newHeader(3, "", "", "", "Snake - Ziel: Keins", questions)
     let countdown = elementBuilder.newHeader(6, "", "", "", "5 Sekunden verbleibend", questions)
     let canvas = elementBuilder.newCanvas("game", 500, 500, questions)
-    new SnakeGame("Snake", 25, canvas, countdown, question).start()
+    new SnakeGame("Snake", 60, canvas, countdown, question).start()
 }
 const renderHearts = () => {    
     for (i = 0; i < hearts; i++) {
@@ -80,7 +80,7 @@ const startGame = () => {
     renderHearts()
     startButton.style.display = "none"
     setGameState(game_states.INGAME_QUESTION)
-    currentTime = getSuggestedRemainingTime()
+    currentTime = suggestRemainingTime()
 
     if (currentTime == -1) {
         startButton.style.display = "block"

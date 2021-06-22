@@ -31,13 +31,65 @@ class SnakeGame extends Game {
 
         this.question.innerText = "Snake Game - " + objective
         this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
-
+        var userPositions = [[4, 7], [5, 7]]
+        var foodPosition = [12, 7]
+        var direction = 1
+        var snakeLength = 2
+        this.redrawBasicField(ctx)
         this.countdownInterval = setInterval(() => {
+            var canvasPositions = []
+            userPositions.forEach((userPosition) => {
+                canvasPositions.push(this.coords(userPosition[0], userPosition[1]))
+            })
+            this.redrawBasicField(ctx)
             this._time--
             this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
             if (this._time <= 0) {
                 clearInterval(this.countdownInterval)
-                // checks
+                $("#" + questions.id).empty()
+                hearts--
+                if (hearts == 0) {
+                    gameOver()
+                    return
+                }
+                startGame()
+            }
+            ctx.fillStyle = "#ff0000"
+            var canvasFood = this.coords(foodPosition[0], foodPosition[1])
+            ctx.fillRect(canvasFood[0] + 5, canvasFood[1] + 5, this.canvas.width / 15 - 12, this.canvas.height / 15 - 12)
+            var head = userPositions.slice(-1)[0]
+            var newHead = Object.assign({}, head)
+            switch (direction) {
+                case 1:
+                    newHead[0] = head[0] + 1
+                    break
+                case 2:
+                    newHead[1] = head[1] + 1
+                    break
+                case 3:
+                    newHead[0] = head[0] - 1
+                    break
+                case 4:
+                    newHead[1] = head[1] - 1
+                    break
+                default:
+                    alert("SYSTEM ERROR!!! EVACUATE!!!")
+                    break
+            }
+            userPositions.push(newHead)
+            if (snakeLength == userPositions.length - 1)
+                userPositions.shift()
+            if (newHead[0] == foodPosition[0] && newHead[1] == foodPosition[1]) {
+                foodPosition = this.randomArray(1, 15)
+                snakeLength++
+            }
+            ctx.fillStyle = "#e2e2e2"
+            canvasPositions.forEach((canvasPosition) => {
+                ctx.fillRect(canvasPosition[0], canvasPosition[1], this.canvas.width / 15 - 1, this.canvas.height / 15 - 1)
+            })
+            var canvasHead = this.coords(head[0], head[1])
+            if (canvasHead[0] > this.canvas.width || canvasHead[1] > this.canvas.height || canvasHead[0] < 0 || canvasHead[1] < 0) {
+                clearInterval(this.countdownInterval)
                 $("#" + questions.id).empty()
                 hearts--
                 if (hearts == 0) {
@@ -48,10 +100,28 @@ class SnakeGame extends Game {
             }
         }, 1000)
 
+        document.onkeydown = e => {
+            if (e.key == 'w' || e.key == "ArrowUp" && direction != 2) {
+                direction = 4
+            } else if (e.key == 'a' || e.key == "ArrowLeft" && direction != 1) {
+                direction = 3
+            } else if (e.key == 's' || e.key == "ArrowDown" && direction != 4) {
+                direction = 2
+            } else if (e.key == 'd' || e.key == "ArrowRight" && direction != 3) {
+                direction = 1
+            }
+        }
+    }
+    index(x, y) {
+        return [Math.ceil((x / this.canvas.width * 15)), Math.ceil(y / this.canvas.height * 15)];
+    }
+    coords(x, y) {
+        return [Math.floor(this.canvas.width / 15 * x), Math.floor(this.canvas.height / 15 * y)];
+    }
+    redrawBasicField(ctx) {
         ctx.strokeStyle = "#fff"
         ctx.fillStyle = "#000"
         ctx.fillRect(0, 0, 500, 500)
-
         for (var i = 0; i < 50; i++) {
             ctx.moveTo(i * (this.canvas.width / 15) - 1, 0)
             ctx.lineTo(i * (this.canvas.width / 15) - 1, this.canvas.height)
@@ -59,5 +129,11 @@ class SnakeGame extends Game {
             ctx.lineTo(this.canvas.width, i * (this.canvas.height / 15) - 1)
             ctx.stroke()
         }
+    }
+    randomArray(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        var returnArray = [Math.floor(Math.random() * (max - min) + min), Math.floor(Math.random() * (max - min) + min)]
+        return returnArray
     }
 }
