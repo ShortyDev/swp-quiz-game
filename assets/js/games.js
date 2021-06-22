@@ -35,13 +35,13 @@ class SnakeGame extends Game {
         var foodPosition = [12, 7]
         var direction = 1
         var snakeLength = 2
-        this.redrawBasicField(ctx)
+        this.renderBasicField(ctx)
         this.countdownInterval = setInterval(() => {
             var canvasPositions = []
             userPositions.forEach((userPosition) => {
                 canvasPositions.push(this.coords(userPosition[0], userPosition[1]))
             })
-            this.redrawBasicField(ctx)
+            this.renderBasicField(ctx)
             this._time--
             this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
             if (this._time <= 0) {
@@ -118,7 +118,7 @@ class SnakeGame extends Game {
     coords(x, y) {
         return [Math.floor(this.canvas.width / 15 * x), Math.floor(this.canvas.height / 15 * y)];
     }
-    redrawBasicField(ctx) {
+    renderBasicField(ctx) {
         ctx.strokeStyle = "#fff"
         ctx.fillStyle = "#000"
         ctx.fillRect(0, 0, 500, 500)
@@ -133,7 +133,6 @@ class SnakeGame extends Game {
     randomArray(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        var returnArray = [Math.floor(Math.random() * (max - min) + min), Math.floor(Math.random() * (max - min) + min)]
-        return returnArray
+        return [Math.floor(Math.random() * (max - min) + min), Math.floor(Math.random() * (max - min) + min)]
     }
 }
