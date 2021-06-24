@@ -18,6 +18,9 @@ class Game {
     get countdown() {
         return this._countdown
     }
+    get game() {
+        return this._game
+    }
     get question() {
         return this._question
     }
@@ -25,9 +28,17 @@ class Game {
 
 class SnakeGame extends Game {
     start() {
+        let end = () => {
+            clearInterval(this.countdownInterval)
+            clearInterval(this.gameInterval)
+            $("#" + questions.id).empty()
+            startGame()
+        }
+
         let objectives = ["Erreiche eine Größe von 10", "Erreiche eine Größe von 15", "Sammle kein Essen ein"]
         let objective = objectives[Math.floor(objectives.length * Math.random() | 0)]
         let ctx = this.canvas.getContext('2d')
+        let partyColors = ["#953eed", "#cd3eed", "#ed3ee4", "#ed3eb6", "#543dd4"]
 
         this.question.innerText = "Snake Game - " + objective
         this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
@@ -37,23 +48,28 @@ class SnakeGame extends Game {
         var snakeLength = 2
         this.renderBasicField(ctx)
         this.countdownInterval = setInterval(() => {
+            this._time--
+            this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
+            if (this._time <= 0) {
+                end()
+                if ((objective == objectives[0] && snakeLength < 10) || (objective == objectives[1] && snakeLength < 15)) {
+                    hearts--
+                    if (hearts == 0) {
+                        gameOver()
+                        return
+                    }
+                }
+            }
+        }, 1000)
+        ctx.font = "20px Arial"
+        this.gameInterval = setInterval(() => {
             var canvasPositions = []
             userPositions.forEach((userPosition) => {
                 canvasPositions.push(this.coords(userPosition[0], userPosition[1]))
             })
             this.renderBasicField(ctx)
-            this._time--
-            this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
-            if (this._time <= 0) {
-                clearInterval(this.countdownInterval)
-                $("#" + questions.id).empty()
-                hearts--
-                if (hearts == 0) {
-                    gameOver()
-                    return
-                }
-                startGame()
-            }
+            ctx.fillStyle = "#009999"
+            ctx.fillText(snakeLength, 5, 20, 1000)
             ctx.fillStyle = "#ff0000"
             var canvasFood = this.coords(foodPosition[0], foodPosition[1])
             ctx.fillRect(canvasFood[0] + 5, canvasFood[1] + 5, this.canvas.width / 15 - 12, this.canvas.height / 15 - 12)
@@ -80,25 +96,38 @@ class SnakeGame extends Game {
             if (snakeLength == userPositions.length - 1)
                 userPositions.shift()
             if (newHead[0] == foodPosition[0] && newHead[1] == foodPosition[1]) {
+                if (objective == objectives[2]) {
+                    end()
+                    hearts--
+                    if (hearts == 0) {
+                        gameOver()
+                        return
+                    }
+                }
                 foodPosition = this.randomArray(1, 15)
                 snakeLength++
             }
-            ctx.fillStyle = "#e2e2e2"
+            ctx.fillStyle = "#32a852";
+            canvasPositions = []
+            userPositions.forEach((userPosition) => {
+                canvasPositions.push(this.coords(userPosition[0], userPosition[1]))
+            })
             canvasPositions.forEach((canvasPosition) => {
+                if (snakeLength >= 15)
+                    ctx.fillStyle = partyColors[Math.floor(Math.random() * partyColors.length)]
                 ctx.fillRect(canvasPosition[0], canvasPosition[1], this.canvas.width / 15 - 1, this.canvas.height / 15 - 1)
             })
             var canvasHead = this.coords(head[0], head[1])
-            if (canvasHead[0] > this.canvas.width || canvasHead[1] > this.canvas.height || canvasHead[0] < 0 || canvasHead[1] < 0) {
-                clearInterval(this.countdownInterval)
-                $("#" + questions.id).empty()
+            if (canvasHead[0] > this.canvas.width - 1 || canvasHead[1] > this.canvas.height - 1 || canvasHead[0] < 0 || canvasHead[1] < 0
+                || userPositions.slice(0, -1).some((body) => body[0] == newHead[0] && body[1] == newHead[1])) {
+                end()
                 hearts--
                 if (hearts == 0) {
                     gameOver()
                     return
                 }
-                startGame()
             }
-        }, 1000)
+        }, 250)
 
         document.onkeydown = e => {
             if (e.key == 'w' || e.key == "ArrowUp" && direction != 2) {
@@ -113,10 +142,10 @@ class SnakeGame extends Game {
         }
     }
     index(x, y) {
-        return [Math.ceil((x / this.canvas.width * 15)), Math.ceil(y / this.canvas.height * 15)];
+        return [Math.ceil((x / this.canvas.width * 15)), Math.ceil(y / this.canvas.height * 15)]
     }
     coords(x, y) {
-        return [Math.floor(this.canvas.width / 15 * x), Math.floor(this.canvas.height / 15 * y)];
+        return [Math.floor(this.canvas.width / 15 * x), Math.floor(this.canvas.height / 15 * y)]
     }
     renderBasicField(ctx) {
         ctx.strokeStyle = "#fff"
@@ -131,8 +160,8 @@ class SnakeGame extends Game {
         }
     }
     randomArray(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
+        min = Math.ceil(min)
+        max = Math.floor(max)
         return [Math.floor(Math.random() * (max - min) + min), Math.floor(Math.random() * (max - min) + min)]
     }
 }
