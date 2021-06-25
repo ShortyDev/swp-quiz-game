@@ -111,7 +111,6 @@ const startGame = () => {
     let secondRow = questions.appendChild(elementBuilder.newDiv("", "row"))
 
     currentInterval = setInterval(async () => {
-        console.log("ir")
         currentTime--
         countdown.innerText = "Noch " + currentTime + " Sekunde" + (currentTime != 1 ? "n" : "")
         if (currentTime <= 0) {

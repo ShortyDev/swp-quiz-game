@@ -48,7 +48,6 @@ class SnakeGame extends Game {
         var snakeLength = 2
         this.renderBasicField(ctx)
         this.countdownInterval = setInterval(() => {
-            console.log("CI")
             this._time--
             this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
             if (this._time <= 0) {
@@ -64,7 +63,6 @@ class SnakeGame extends Game {
         }, 1000)
         ctx.font = "20px Arial"
         this.gameInterval = setInterval(() => {
-            console.log("GI")
             var canvasPositions = []
             userPositions.forEach((userPosition) => {
                 canvasPositions.push(this.coords(userPosition[0], userPosition[1]))
