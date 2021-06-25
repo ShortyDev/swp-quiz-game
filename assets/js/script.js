@@ -56,6 +56,7 @@ const gameOver = () => {
     questionsSolved = 0
     hearts = 3
     $("#questions").empty()
+    clearInterval(currentInterval)
 }
 const startMinigame = () => {
     setGameState(game_states.INGAME_GAME)
@@ -110,6 +111,7 @@ const startGame = () => {
     let secondRow = questions.appendChild(elementBuilder.newDiv("", "row"))
 
     currentInterval = setInterval(async () => {
+        console.log("ir")
         currentTime--
         countdown.innerText = "Noch " + currentTime + " Sekunde" + (currentTime != 1 ? "n" : "")
         if (currentTime <= 0) {
@@ -150,36 +152,44 @@ const setClickEvents = () => {
     document.getElementById("answer1").onclick = () => {
         clearInterval(currentInterval)
         if (currentQuestion.answers[0].correct) {
+            clearInterval(currentInterval)
             startGame()
             questionsSolved++
         } else {
+            clearInterval(currentInterval)
             startMinigame()
         }
     }
     document.getElementById("answer2").onclick = () => {
         clearInterval(currentInterval)
         if (currentQuestion.answers[1].correct) {
+            clearInterval(currentInterval)
             startGame()
             questionsSolved++
         } else {
+            clearInterval(currentInterval)
             startMinigame()
         }
     }
     document.getElementById("answer3").onclick = () => {
         clearInterval(currentInterval)
         if (currentQuestion.answers[2].correct) {
+            clearInterval(currentInterval)
             startGame()
             questionsSolved++
         } else {
+            clearInterval(currentInterval)
             startMinigame()
         }
     }
     document.getElementById("answer4").onclick = () => {
         clearInterval(currentInterval)
         if (currentQuestion.answers[3].correct) {
+            clearInterval(currentInterval)
             startGame()
             questionsSolved++
         } else {
+            clearInterval(currentInterval)
             startMinigame()
         }
     }
