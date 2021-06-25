@@ -28,6 +28,7 @@ const getNextQuestion = async () => {
         url: "https://questions-game-swp.herokuapp.com/new/random",
         type: 'GET'
     });
+    document.getElementById("note").style.display = "none"
     return JSON.parse(result)
 }
 const suggestRemainingTime = () => {

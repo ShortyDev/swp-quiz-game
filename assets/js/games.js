@@ -38,7 +38,6 @@ class SnakeGame extends Game {
         let objectives = ["Erreiche eine Größe von 10", "Erreiche eine Größe von 15", "Sammle kein Essen ein"]
         let objective = objectives[Math.floor(objectives.length * Math.random() | 0)]
         let ctx = this.canvas.getContext('2d')
-        let partyColors = ["#953eed", "#cd3eed", "#ed3ee4", "#ed3eb6", "#543dd4"]
 
         this.question.innerText = "Snake Game - " + objective
         this._countdown.innerText = "Noch " + this._time + " Sekunde" + (this._time != 1 ? "n" : "") + " verbleibend"
@@ -113,8 +112,6 @@ class SnakeGame extends Game {
                 canvasPositions.push(this.coords(userPosition[0], userPosition[1]))
             })
             canvasPositions.forEach((canvasPosition) => {
-                if (snakeLength >= 15)
-                    ctx.fillStyle = partyColors[Math.floor(Math.random() * partyColors.length)]
                 ctx.fillRect(canvasPosition[0], canvasPosition[1], this.canvas.width / 15 - 1, this.canvas.height / 15 - 1)
             })
             var canvasHead = this.coords(head[0], head[1])
